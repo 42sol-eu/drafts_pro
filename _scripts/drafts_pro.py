@@ -124,10 +124,13 @@ def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
                 drafts_content = file_contents.read()
                 drafts_prefix = ""
                 drafts_suffix = ""
-                if meta == MetaData.front:
-                      drafts_prefix = f'---\nfront_matter\n---\n'
-                if meta == MetaData.back:
-                      drafts_suffix = f'---\nback_matter\n---\n'
+                meta_data = ""
+                if meta is not MetaData.none:
+                  meta_data += '\nautor: {g_config_data["author"]}'   
+                if meta is MetaData.front:
+                  drafts_prefix = f'---\n{meta_data}\n---\n'
+                if meta is MetaData.back:
+                  drafts_suffix = f'---\n{meta_data}\n---\n'
                 json_export['content'] = f"{drafts_prefix}{drafts_content}{drafts_suffix}"
                 export_output.append(json_export)
 
