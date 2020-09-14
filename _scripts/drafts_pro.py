@@ -139,13 +139,13 @@ def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
                   meta_data += f'tags: {g_config_data["tags"]}\n'
 
                 if meta is MetaData.front:
-                  drafts_prefix = f'---\n{meta_data}\n---\n'
+                  drafts_prefix = f'\n\n---\n\n{meta_data}\n---\n'
                 
                 if meta is MetaData.back:
-                  drafts_suffix = f'---\n{meta_data}\n---\n'
+                  drafts_suffix = f'\n\n---\n\n{meta_data}\n---\n'
                 json_export['content'] = f"{drafts_prefix}{drafts_content}{drafts_suffix}"
                 export_output.append(json_export)
-    with open(f'drafts_import_{date_string}.json', 'w') as json_file:
+    with open(f'drafts_import_{date_string}.draftsExport', 'w') as json_file:
       drafts_data = json.dumps(export_output, sort_keys=True, indent=4)
       json_file.write(drafts_data)
       if 0:
