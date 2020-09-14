@@ -20,11 +20,14 @@
 #    - [x] add command get to show default value for key
 #    - [ ] add append to append a item to default value for key
 #    - [x] refactor date string generation in helper function
-#    - [ ] 
+#    - [ ] maybe: use safe_file
+#    - [ ] maybe: use colorama
+
 
 import os, time                   # stdlib
 from pathlib import Path          # stdlib
 import json                       # stdlib
+from enum import Enum             # stdlib
 import typer                      # https://typer.tiangolo.com
 # import yaml                       # https://pyyaml.org/wiki/PyYAMLDocumentation
 # TODO: add a check for Yaml/Json Frontmatters or Backmatters
@@ -45,6 +48,12 @@ g_default_data = {
   'languageGrammer': 'Markdown',
   'tags': [],
 }
+
+class MetaData(str, Enum):
+    none = "none"
+    front = "front"
+    back = "back"
+
 app = typer.Typer()
 
 def load():
@@ -72,12 +81,12 @@ def date_string( p_timestamp, output_datetime_format=g_output_datetime_format):
       return datetime.fromtimestamp(p_timestamp, timezone.utc).strftime(output_datetime_format)
 
 @app.command()
-def md2drafts(input_directory: str, front_matter: bool = False):
+def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
     global g_config_data
     typer.echo(f"import from {input_directory}")
 
     load()
-    typer.echo(f"- front_matter: {front_matter}")
+    typer.echo(f"- meta: {meta}")
     # typer.echo(f"- back_matter: {back_matter}")
     
     directory = os.fsencode(input_directory)
@@ -112,8 +121,14 @@ def md2drafts(input_directory: str, front_matter: bool = False):
                 json_export['accessed_at'] = date_string(os.path.getmtime(filepath))
 
                 file_contents = open(filepath)
-                json_export['content'] = file_contents.read()
-
+                drafts_content = file_contents.read()
+                drafts_prefix = ""
+                drafts_suffix = ""
+                if meta == MetaData.front:
+                      drafts_prefix = f'---\nfront_matter\n---\n'
+                if meta == MetaData.back:
+                      drafts_suffix = f'---\nback_matter\n---\n'
+                json_export['content'] = f"{drafts_prefix}{drafts_content}{drafts_suffix}"
                 export_output.append(json_export)
 
     print(json.dumps(export_output, sort_keys=True, indent=4))
