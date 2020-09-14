@@ -1,10 +1,13 @@
 {
     "author": "Andreas Haeberle",
     "flagged": true,
+    "defaultVersion": "v01",
+    "meta_affiliation" : "42sol.eu",
+    "meta_company" : "42sol-eu",
     "folder": 0,
     "languageGrammar": "Markdown",
-    "latitude": "42.0",
-    "longitude": "0.42",
+    "latitude": 42.0,
+    "longitude": 0.42,
     "tags": [
         "todo",
         "imported"

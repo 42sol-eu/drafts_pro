@@ -77,7 +77,7 @@ def save():
       json_data = json.dumps(g_config_data, sort_keys=True, indent=4)
       config_file.write(json_data)
 
-def date_string( p_timestamp, output_datetime_format=g_output_datetime_format):
+def get_date_string( p_timestamp, output_datetime_format=g_output_datetime_format):
       return datetime.fromtimestamp(p_timestamp, timezone.utc).strftime(output_datetime_format)
 
 @app.command()
@@ -116,25 +116,40 @@ def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
                 json_export['created_longitude'] = longitude
                 json_export['created_latitude'] = latitude
 
-                json_export['modified_at'] = date_string(os.path.getmtime(filepath))
-                json_export['created_at'] = date_string(os.path.getctime(filepath))
-                json_export['accessed_at'] = date_string(os.path.getmtime(filepath))
+                json_export['modified_at'] = get_date_string(os.path.getmtime(filepath))
+                json_export['created_at'] = get_date_string(os.path.getctime(filepath))
+                date_string = json_export['created_at'][:10]
+                print (date_string)
+                json_export['accessed_at'] = get_date_string(os.path.getmtime(filepath))
 
                 file_contents = open(filepath)
                 drafts_content = file_contents.read()
                 drafts_prefix = ""
                 drafts_suffix = ""
                 meta_data = ""
+
                 if meta is not MetaData.none:
-                  meta_data += '\nautor: {g_config_data["author"]}'   
+                  draft_title = drafts_content.split('\n')[0]
+                  meta_data += f'title: {draft_title}\n'
+                  meta_data += f'autor: {g_config_data["author"]}\n'
+                  meta_data += f'date: {g_config_data["meta_affiliation"]}\n'
+                  meta_data += f'affiliation: {date_string}\n'
+                  meta_data += f'copyright: © {date_string[:4]}, {g_config_data["meta_company"]}\n'
+                  meta_data += f'version: {g_config_data["defaultVersion"]}\n'
+                  meta_data += f'tags: {g_config_data["tags"]}\n'
+
                 if meta is MetaData.front:
                   drafts_prefix = f'---\n{meta_data}\n---\n'
+                
                 if meta is MetaData.back:
                   drafts_suffix = f'---\n{meta_data}\n---\n'
                 json_export['content'] = f"{drafts_prefix}{drafts_content}{drafts_suffix}"
                 export_output.append(json_export)
-
-    print(json.dumps(export_output, sort_keys=True, indent=4))
+    with open(f'drafts_import_{date_string}.json', 'w') as json_file:
+      drafts_data = json.dumps(export_output, sort_keys=True, indent=4)
+      json_file.write(drafts_data)
+      if 0:
+        typer.echo(drafts_data)
 
 
 @app.command()
@@ -207,8 +222,8 @@ Example output format:
     "flagged" : false,
     "modified_at" : "2020-09-05T14:38:24Z",
     "accessed_at" : "2020-09-06T02:52:06Z",
-    "created_at" : "2020-09-04T01:18:15Z"
-    "languageGrammar" : "Markdown",
+    "created_at" : "2020-09-04T01:18:15Z",
+    "languageGrammar" : "Markdown"
   }
 ]
 """
