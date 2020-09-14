@@ -6,8 +6,14 @@ andreas.felix.haeberle@gmail
 == drafts_pro (python3)
 
 . Based on  https://gist.github.com/42sol-eu/f4f7cd2ad6ced790fed541aa442e566b
+.. inspired by https://forums.getdrafts.com/t/bulk-import-of-notes-preserving-date-times/8240/10
 
 === Requirements
 
 . typer: cli package (>= v2020.01)
 . 
+
+== Goals
+
+. add a front matter / back matter section to draft (seehttps://forums.getdrafts.com/t/yaml-json-converter-support/7419/7)
+. port it to pythonista on iOS
