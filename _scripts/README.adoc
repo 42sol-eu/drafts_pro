@@ -6,12 +6,22 @@ andreas.felix.haeberle@gmail
 == drafts_pro (python3)
 
 . Based on  https://gist.github.com/42sol-eu/f4f7cd2ad6ced790fed541aa442e566b
-.. inspired by https://forums.getdrafts.com/t/bulk-import-of-notes-preserving-date-times/8240/10
+.. based on inspired by https://forums.getdrafts.com/t/bulk-import-of-notes-preserving-date-times/8240/10
 
 === Requirements
 
 . typer: cli package (>= v2020.01)
 . 
+
+== Python setup
+
+NOTE: This is macOS only!
+
+. use python 3.8 (or newer) on macOS (using `brew install python`)
+. create a virtual environment (using `python3 venv .venv)
+.. do not forget to activate (`.venv/bin/activate`)
+.. and install python requirements (`python3 -m pip install -r requirements.txt`)
+. test setup with `python drafts_pro.py md2drafts test`
 
 == Goals
 

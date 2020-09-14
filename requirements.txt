@@ -1,5 +1,5 @@
 #setuptools
 #clang
-loguru # https://github.com/Delgan/loguru
+# loguru # https://github.com/Delgan/loguru
 typer  # https://duckduckgo.com/?q=python+typer&t=osx&ia=software
 pyyaml # https://pyyaml.org/wiki/PyYAMLDocumentation
