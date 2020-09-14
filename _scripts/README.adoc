@@ -1,0 +1,13 @@
+= drafts pro scripts 
+andreas.felix.haeberle@gmail
+2020-09-14
+:lang: en
+
+== drafts_pro (python3)
+
+. Based on  https://gist.github.com/42sol-eu/f4f7cd2ad6ced790fed541aa442e566b
+
+=== Requirements
+
+. typer: cli package (>= v2020.01)
+. 

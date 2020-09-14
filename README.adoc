@@ -1,0 +1,17 @@
+= drafts pro (Project) 
+andreas.felix.haeberle@gmail
+2020-09-14
+:lang: en
+
+== Aim
+
+. Based on  https://gist.github.com/42sol-eu/f4f7cd2ad6ced790fed541aa442e566b
+
+=== Requirements
+
+. core
+.. drafts (macOS)
+.. git (version control)
+.. asciidoctor (documentation only)
+. _scripts:
+.. python3
