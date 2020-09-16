@@ -39,7 +39,6 @@ import sys
 
 from datetime import datetime, timezone
 
-g_output_datetime_format = '%Y-%m-%dT%H:%M:%S%Z'
 g_config_file = 'drafts_pro.config.json'
 g_config_data = {}
 g_default_data = {
@@ -77,8 +76,12 @@ def save():
       json_data = json.dumps(g_config_data, sort_keys=True, indent=4)
       config_file.write(json_data)
 
-def get_date_string( p_timestamp, output_datetime_format=g_output_datetime_format):
-      return datetime.fromtimestamp(p_timestamp, timezone.utc).strftime(output_datetime_format)
+def get_date_string( p_timestamp):
+      r_iso8601 = datetime.fromtimestamp(p_timestamp, timezone.utc).isoformat("T", "seconds")
+      if r_iso8601[-1] != "Z":
+        r_iso8601 = r_iso8601.replace("+00:00", "Z")
+      return r_iso8601
+
 
 @app.command()
 def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
