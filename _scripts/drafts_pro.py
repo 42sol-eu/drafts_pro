@@ -40,6 +40,7 @@ import sys
 from datetime import datetime, timezone
 
 g_config_file = 'drafts_pro.config.json'
+g_left_title_stip_characters = "#=-* "
 g_config_data = {}
 g_default_data = {
   'flagged': False,
@@ -86,6 +87,7 @@ def get_date_string( p_timestamp):
 @app.command()
 def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
     global g_config_data
+    global g_left_title_stip_characters
     typer.echo(f"import from {input_directory}")
 
     load()
@@ -133,6 +135,7 @@ def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
 
                 if meta is not MetaData.none:
                   draft_title = drafts_content.split('\n')[0]
+                  draft_title = draft_title.lstrip(g_left_title_stip_characters)
                   meta_data += f'title: {draft_title}\n'
                   meta_data += f'autor: {g_config_data["author"]}\n'
                   meta_data += f'date: {g_config_data["meta_affiliation"]}\n'
@@ -142,10 +145,10 @@ def md2drafts(input_directory: str, meta: MetaData = MetaData.none):
                   meta_data += f'tags: {g_config_data["tags"]}\n'
 
                 if meta is MetaData.front:
-                  drafts_prefix = f'\n\n---\n\n{meta_data}\n---\n'
+                  drafts_prefix = f'---\n\n{meta_data}\n---\n'
                 
                 if meta is MetaData.back:
-                  drafts_suffix = f'\n\n---\n\n{meta_data}\n---\n'
+                  drafts_suffix = f'\n\n---\n\n{meta_data}\n---'
                 json_export['content'] = f"{drafts_prefix}{drafts_content}{drafts_suffix}"
                 export_output.append(json_export)
     with open(f'drafts_import_{date_string}.draftsExport', 'w') as json_file:
